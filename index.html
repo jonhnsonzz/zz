@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高新认定自检工具 — AI合规助手</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f7fa;color:#1a1a2e;line-height:1.6}
+.container{max-width:560px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:32px 20px;text-align:center;border-radius:16px;margin-bottom:24px}
+header h1{font-size:22px;margin-bottom:8px}
+header p{font-size:14px;opacity:0.8}
+.card{background:#fff;border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.card h2{font-size:16px;margin-bottom:16px;color:#1a1a2e}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;transition:border .2s}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#6c63ff}
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,#6c63ff,#4834d4);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.btn:hover{opacity:0.9}
+.result-card{display:none;margin-top:16px;padding:24px;border-radius:12px}
+.result-card.pass{background:#e8f5e9;border:2px solid #4caf50;display:block}
+.result-card.fail{background:#fff3e0;border:2px solid #ff9800;display:block}
+.result-card h3{font-size:16px;margin-bottom:12px}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:12px;font-weight:600;margin-right:4px;margin-bottom:4px}
+.tag.green{background:#c8e6c9;color:#2e7d32}
+.tag.red{background:#ffcdd2;color:#c62828}
+.tag.orange{background:#ffe0b2;color:#e65100}
+.item{display:flex;align-items:flex-start;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
+.item:last-child{border-bottom:none}
+.item .icon{width:24px;font-size:16px;flex-shrink:0}
+.disclaimer{font-size:12px;color:#999;margin-top:16px;text-align:center}
+.hidden{display:none}
+.progress{margin-bottom:16px}
+.progress-bar{height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .5s;background:linear-gradient(90deg,#6c63ff,#4834d4)}
+.progress-text{font-size:12px;color:#666;margin-top:4px;text-align:right}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🏢 高新认定自检工具</h1>
+  <p>输入企业信息 → 3分钟判断你是否符合高新技术企业认定条件</p>
+</header>
+
+<div class="card">
+  <h2>📋 填写企业信息</h2>
+  <div class="form-group">
+    <label>公司成立多久了？</label>
+    <select id="age">
+      <option value="">请选择</option>
+      <option value="0">不到1年</option>
+      <option value="1">1~2年</option>
+      <option value="3">3年及以上</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>全职员工人数</label>
+    <select id="employees">
+      <option value="">请选择</option>
+      <option value="1-9">1~9人</option>
+      <option value="10-49">10~49人</option>
+      <option value="50+">50人及以上</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>研发人员占比</label>
+    <select id="rdPct">
+      <option value="">请选择</option>
+      <option value="below10">不到10%</option>
+      <option value="10-30">10%~30%</option>
+      <option value="30+">30%以上</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>近一年营业收入</label>
+    <select id="revenue">
+      <option value="">请选择</option>
+      <option value="0-5m">不到500万</option>
+      <option value="5m-200m">500万~2亿</option>
+      <option value="200m+">2亿以上</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>知识产权数量（发明专利/软著/实用新型合计）</label>
+    <select id="ip">
+      <option value="">请选择</option>
+      <option value="0">0项</option>
+      <option value="1-5">1~5项</option>
+      <option value="6-14">6~14项</option>
+      <option value="15+">15项及以上</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>公司所在城市</label>
+    <select id="city">
+      <option value="">请选择</option>
+      <option value="一线">北京/上海/深圳/广州</option>
+      <option value="新一线">杭州/成都/南京/武汉等</option>
+      <option value="其他">其他城市</option>
+    </select>
+  </div>
+  <button class="btn" onclick="check()">🔍 开始自检</button>
+</div>
+
+<div id="result" class="hidden" style="display:none"></div>
+
+<div class="disclaimer">
+  本工具仅供参考，不构成专业法律意见。最终认定以官方审核结果为准。
+</div>
+
+</div>
+
+<script>
+const WEIGHTS = {
+  age: { w: 10, label: '注册时间≥1年' },
+  employees: { w: 10, label: '科技人员≥10%' },
+  rdPct: { w: 15, label: '研发人员占比达标' },
+  revenue: { w: 15, label: '收入规模达标' },
+  ip: { w: 30, label: '知识产权达标' },
+  city: { w: 20, label: '城市政策红利' }
+};
+
+function check() {
+  const age = document.getElementById('age').value;
+  const employees = document.getElementById('employees').value;
+  const rdPct = document.getElementById('rdPct').value;
+  const revenue = document.getElementById('revenue').value;
+  const ip = document.getElementById('ip').value;
+  const city = document.getElementById('city').value;
+
+  if (!age || !employees || !rdPct || !revenue || !ip || !city) {
+    alert('请填写所有信息');
+    return;
+  }
+
+  let score = 0;
+  let maxScore = 100;
+  let details = [];
+  let passed = true;
+
+  // 1. 注册时间
+  if (age === '0') {
+    details.push({icon:'❌', text:'注册不满1年，硬性条件不达标', status:'fail'});
+    passed = false;
+  } else if (age === '1') {
+    details.push({icon:'⚠️', text:'刚满1~2年，可以申报但成长性评分可能偏低', status:'warn'});
+    score += 5;
+  } else {
+    details.push({icon:'✅', text:'注册3年以上，条件满足', status:'pass'});
+    score += 10;
+  }
+
+  // 2. 员工人数 + 研发占比（合并判断 ≥10%）
+  if (employees === '1-9') {
+    if (rdPct === 'below10') {
+      details.push({icon:'❌', text:'员工少且研发占比<10%，不达标', status:'fail'});
+      passed = false;
+    } else {
+      details.push({icon:'⚠️', text:'员工不足10人，虽研发占比达标但审查可能从严', status:'warn'});
+      score += 8;
+    }
+  } else if (employees === '10-49') {
+    if (rdPct === 'below10') {
+      details.push({icon:'❌', text:'研发人员占比<10%，不达标', status:'fail'});
+      passed = false;
+    } else {
+      details.push({icon:'✅', text:'研发人员占比达标 (' + rdPct + ')', status:'pass'});
+      score += 10;
+    }
+  } else {
+    if (rdPct === 'below10') {
+      details.push({icon:'❌', text:'50人以上公司研发占比不到10%，不达标', status:'fail'});
+      passed = false;
+    } else {
+      details.push({icon:'✅', text:'研发人员数量充足且占比达标', status:'pass'});
+      score += 10;
+    }
+  }
+
+  // 3. 收入 + 研发费用占比（关联判断）
+  if (revenue === '0-5m') {
+    details.push({icon:'⚠️', text:'收入<500万，研发费用需≥5%，规模偏小审查可能从严', status:'warn'});
+    score += 8;
+  } else if (revenue === '5m-200m') {
+    details.push({icon:'✅', text:'收入500万~2亿，研发费用需≥4%，条件适中', status:'pass'});
+    score += 12;
+  } else {
+    details.push({icon:'✅', text:'收入2亿以上，研发费用需≥3%，条件较宽松', status:'pass'});
+    score += 15;
+  }
+
+  // 4. 知识产权（权重最高）
+  if (ip === '0') {
+    details.push({icon:'❌', text:'没有知识产权，无法申报', status:'fail'});
+    passed = false;
+  } else if (ip === '1-5') {
+    details.push({icon:'⚠️', text:'知识产权数量偏少，建议补充实用新型或软著', status:'warn'});
+    score += 12;
+  } else if (ip === '6-14') {
+    details.push({icon:'✅', text:'知识产权数量达标，建议有1项发明专利', status:'pass'});
+    score += 24;
+  } else {
+    details.push({icon:'✅', text:'知识产权数量充足，如含发明专利则加分', status:'pass'});
+    score += 30;
+  }
+
+  // 5. 城市政策
+  if (city === '一线') {
+    details.push({icon:'✅', text:'一线城市，奖励10~50万+政策支持齐全', status:'pass'});
+    score += 18;
+  } else if (city === '新一线') {
+    details.push({icon:'✅', text:'新一线城市，奖励20~60万+人才政策好', status:'pass'});
+    score += 16;
+  } else {
+    details.push({icon:'⚠️', text:'其他城市也有奖励，需查询当地科技局具体金额', status:'warn'});
+    score += 12;
+  }
+
+  // Result
+  const pct = Math.round((score / maxScore) * 100);
+  const resultDiv = document.getElementById('result');
+  resultDiv.style.display = 'block';
+
+  let html = '';
+
+  if (!passed || pct < 60) {
+    html = `<div class="result-card fail">
+      <h3>🔴 暂不符合条件（评分${pct}分）</h3>
+      <p style="font-size:14px;margin-bottom:12px;">以下条件未满足，建议补齐后再申报：</p>`;
+  } else if (pct < 80) {
+    html = `<div class="result-card fail">
+      <h3>🟡 有潜力但需补充（评分${pct}分）</h3>
+      <p style="font-size:14px;margin-bottom:12px;">基本条件满足，但以下方面可以加强：</p>`;
+  } else {
+    html = `<div class="result-card pass">
+      <h3>🟢 条件充分！可以申报（评分${pct}分）</h3>
+      <p style="font-size:14px;margin-bottom:12px;">建议尽快启动申报流程，把握当年窗口期。</p>`;
+  }
+
+  // Progress bar
+  html += `<div class="progress">
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="progress-text">综合评分 ${pct}/100</div>
+  </div>`;
+
+  // Detail items
+  details.forEach(d => {
+    const cls = d.status === 'pass' ? 'green' : d.status === 'warn' ? 'orange' : 'red';
+    html += `<div class="item"><div class="icon">${d.icon}</div><div><span class="tag ${cls}">${d.status === 'pass' ? '达标' : d.status === 'warn' ? '注意' : '不达标'}</span> ${d.text}</div></div>`;
+  });
+
+  // Next steps
+  html += `<div style="margin-top:16px;padding-top:12px;border-top:1px solid #eee">
+    <p style="font-size:13px;font-weight:600;margin-bottom:8px">📌 下一步建议：</p>`;
+  if (!passed) {
+    html += `<p style="font-size:13px;color:#666;">先补齐硬性条件，再准备申报材料。联系专业机构做预审评估。</p>`;
+  } else if (pct < 80) {
+    html += `<p style="font-size:13px;color:#666;">补充知识产权和材料细节后可提高通过率。建议联系代理机构把关。</p>`;
+  } else {
+    html += `<p style="font-size:13px;color:#666;">可以登录高新技术企业认定管理工作网（tyrz.chinatorch.org.cn）提交申请。如需完整申报材料清单，可付费获取详细SOP报告。</p>`;
+  }
+  html += `</div></div>`;
+
+  resultDiv.innerHTML = html;
+  resultDiv.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
