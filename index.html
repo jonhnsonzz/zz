@@ -2,56 +2,211 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>高新认定自检工具</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高新认定 · 自检与行动指南</title>
 <style>
-body{font-family:system-ui,sans-serif;max-width:600px;margin:40px auto;padding:20px;background:#f0f2f5;color:#333}
-.card{background:#fff;border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-h1{text-align:center;font-size:24px;margin:0 0 4px 0;color:#1a1a2e}
-.sub{text-align:center;color:#888;font-size:14px;margin-bottom:20px}
-.q{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #eee}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f0f2f5;color:#1a1a2e;padding:20px}
+.container{max-width:680px;margin:0 auto}
+.card{background:#fff;border-radius:16px;padding:28px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+h1{font-size:22px;text-align:center;margin-bottom:4px}
+.sub{text-align:center;color:#888;font-size:13px;margin-bottom:20px}
+.q{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #f0f0f0}
 .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
-.q label{display:block;font-weight:600;font-size:14px;margin-bottom:6px;color:#444}
-.q select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fafafa}
+.q label{display:block;font-weight:600;font-size:14px;margin-bottom:6px;color:#333}
+.q select{width:100%;padding:10px 12px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;background:#fff;appearance:none;cursor:pointer}
 .q select:focus{outline:none;border-color:#4361ee}
-.btn{display:block;width:100%;padding:12px;background:#4361ee;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;text-align:center}
+.btn{display:block;width:100%;padding:13px;background:#4361ee;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;text-align:center;transition:background .2s}
 .btn:hover{background:#3651d4}
-.btn.green{background:#2ec4b6}
-.btn.green:hover{background:#28a89d}
+.btn.outline{background:transparent;color:#4361ee;border:2px solid #4361ee;margin-top:12px}
+.btn.outline:hover{background:#f0f3ff}
 .hide{display:none}
-.result{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-.score{text-align:center;padding:16px 0}
-.score-num{font-size:48px;font-weight:700}
+.result-section{margin-bottom:20px}
+.result-section:last-child{margin-bottom:0}
+.score-wrap{text-align:center;padding:12px 0 16px}
+.score-num{font-size:52px;font-weight:800;line-height:1}
+.score-label{color:#888;font-size:14px;margin-top:4px}
 .score-num.green{color:#2ec4b6}
 .score-num.orange{color:#ff9f1c}
 .score-num.red{color:#e71d36}
-.tag{display:inline-block;padding:3px 10px;border-radius:20px;color:#fff;font-size:13px;font-weight:600;margin:6px 0}
-.tag.green{background:#2ec4b6}
-.tag.orange{background:#ff9f1c}
-.tag.red{background:#e71d36}
-.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
-.row:last-child{border:none}
-.suggest{background:#f8f9ff;border-radius:8px;padding:14px;margin-top:16px;font-size:13px;color:#333;line-height:1.8}
-.suggest strong{color:#4361ee}
-.footer{text-align:center;color:#aaa;font-size:12px;margin-top:32px;line-height:1.8}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;color:#fff;font-size:13px;font-weight:600;margin:8px 0}
+.badge.green{background:#2ec4b6}
+.badge.orange{background:#ff9f1c}
+.badge.red{background:#e71d36}
+.section-title{font-size:16px;font-weight:700;margin:16px 0 10px;padding-bottom:8px;border-bottom:2px solid #f0f0f0}
+.dim-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f5f5f5;gap:12px}
+.dim-row:last-child{border:none}
+.dim-label{font-size:14px;flex:1}
+.dim-score{font-weight:700;font-size:14px;white-space:nowrap}
+.dim-icon{font-size:16px;margin-right:6px}
+.guide-card{background:#f8f9ff;border-radius:12px;padding:16px;margin-top:12px}
+.guide-card.green-bg{background:#f0faf6}
+.guide-card h4{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.guide-card p{font-size:13px;color:#555;line-height:1.7}
+.guide-card .tip{background:#fff;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:13px;border-left:3px solid #4361ee;line-height:1.6}
+.process-step{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f0f0f0}
+.process-step:last-child{border:none}
+.process-step .step-num{width:28px;height:28px;background:#4361ee;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;margin-top:2px}
+.process-step .step-content{flex:1}
+.process-step .step-title{font-weight:600;font-size:14px}
+.process-step .step-desc{font-size:13px;color:#666;margin-top:4px;line-height:1.6}
+.verdict{font-size:18px;font-weight:700;margin:12px 0}
+.footer{text-align:center;color:#aaa;font-size:12px;margin-top:24px;line-height:1.8}
+@media(max-width:480px){.card{padding:20px}}
 </style>
 </head>
 <body>
+<div class="container">
 <div class="card" id="quizCard">
-<h1>🏢 高新认定自检</h1>
-<p class="sub">6个问题 · 3分钟出结果</p>
+<h1>🏢 高新认定</h1>
+<p class="sub">6个问题 · 3分钟 · 出结果+行动指南</p>
 <div id="questions"></div>
-<button class="btn" onclick="calc()">开始评估</button>
+<button class="btn" onclick="calc()">开始评估 →</button>
 </div>
-<div id="resultCard" class="hide result"></div>
-<div class="footer">仅供初步自查参考 · 正式申报以官方为准</div>
+
+<div id="resultCard" class="hide">
+<div class="card" id="scoreCard"></div>
+<div class="card hide" id="guideCard"><div id="guideContent"></div></div>
+<div class="card hide" id="processCard"><div id="processContent"></div></div>
+<button class="btn outline" onclick="reset()">← 重新评估</button>
+</div>
+
+<div class="footer">仅供初步自查参考 · 正式申报以主管部门最新要求为准</div>
+</div>
+
 <script>
-const d=[{q:'企业注册成立时间？',o:['不满1年','1年以上','3年以上'],s:[0,5,10]},{q:'Ⅰ类知识产权数量（发明专利等）？',o:['0项','1项','2项以上'],s:[0,10,15]},{q:'科技人员占职工总数比例？',o:['低于10%','10%~30%','30%以上'],s:[0,10,15]},{q:'近3年研发费用比例达标吗？',o:['不达标','基本达标','完全达标'],s:[0,10,20]},{q:'高新收入占总收入比例？',o:['低于60%','60%~80%','80%以上'],s:[0,15,20]},{q:'创新能力评价预估多少分？',o:['低于70','70~80','80以上'],s:[0,10,20]}];
-function init(){const c=document.getElementById('questions');c.innerHTML='';d.forEach((x,i)=>{c.innerHTML+='<div class="q"><label>'+(i+1)+'. '+x.q+'</label><select id="s'+i+'">'+x.o.map((t,j)=>'<option value="'+x.s[j]+'">'+t+'</option>').join('')+'</select></div>';});}
-function calc(){let t=0;d.forEach((_,i)=>t+=+document.getElementById('s'+i).value);const r=document.getElementById('resultCard');r.classList.remove('hide');document.getElementById('quizCard').classList.add('hide');let p=t>=70,c,l,cl;if(t>=85){c='green';l='A';cl='#2ec4b6';}else if(t>=70){c='orange';l='B';cl='#ff9f1c';}else{c='red';l='C';cl='#e71d36';}
-let rows='';d.forEach((x,i)=>{const v=+document.getElementById('s'+i).value;const m=Math.max(...x.s);const ic=v===0?'❌':v<m?'⚠️':'✅';rows+='<div class="row"><span>'+ic+' '+x.q+'</span><span style="font-weight:600;color:'+(v===0?'#e71d36':v<m?'#ff9f1c':'#2ec4b6')+'">'+v+'/'+m+'</span></div>';});
-let sug='';if(t<70)sug='先补齐硬性条件（知识产权、科技人员比例），再准备申报材料。建议咨询专业机构做预审评估。';else if(t<85)sug='基本达到条件，建议针对低分项补强后再申报，提高通过率。';else sug='条件充分！可登录高新技术企业认定管理工作网提交申请。如需完整申报材料清单，可获取详细SOP报告。';
-r.innerHTML='<div class="score"><div class="score-num '+c+'">'+t+'</div><div style="color:#888;font-size:14px">综合评分 / 100</div><span class="tag '+c+'">'+l+'级</span> '+(t>=70?'✅ 建议申报':'❌ 暂不建议')+'</div><div style="font-weight:600;margin:8px 0 4px">各维度详情：</div>'+rows+'<div class="suggest"><strong>下一步：</strong>'+sug+'</div><button class="btn green" style="margin-top:16px" onclick="reset()">重新评估</button>';r.scrollIntoView({behavior:'smooth'});}
-function reset(){document.getElementById('resultCard').classList.add('hide');document.getElementById('quizCard').classList.remove('hide');d.forEach((_,i)=>document.getElementById('s'+i).selectedIndex=0);window.scrollTo({top:0,behavior:'smooth'})}
+const d=[
+  {q:'企业注册成立时间？',o:['不满1年','1年以上','3年以上'],s:[0,5,10],k:'year',
+   guide:{
+     0:'企业成立不满1年，暂不符合高新认定"注册成立1年以上"的基本条件。建议等满1年再申报，这期间可以提前准备知识产权和财务资料。',
+     5:'已满1年，符合基本条件。建议尽早准备申报材料，知识产权数量越充分越好。',
+     10:'成立3年以上，条件充分。注意知识产权和财务数据的连续性。'
+   }},
+  {q:'Ⅰ类知识产权数量（发明专利等）？',o:['0项','1项','2项以上'],s:[0,10,15],k:'ip',
+   guide:{
+     0:'暂无Ⅰ类知识产权。补救方案：①申请软件著作权（1-2个月下证，费用300-1000元）作为过渡；②同时提交发明专利申请（1-3年）。软著可以快速补上知识产权得分。',
+     5:'仅有1项，建议再补充1-2项。可以通过软著或实用新型专利快速补充。',
+     10:'2项以上，条件充分。注意专利必须与主营业务相关。'
+   }},
+  {q:'科技人员占职工总数比例？',o:['低于10%','10%~30%','30%以上'],s:[0,10,15],k:'staff',
+   guide:{
+     0:'低于10%，不达标。需补充技术人员。方法：①招聘全职技术人员；②将研发岗位人员从其他部门分离出来单独统计；③委托外部研发。要求科技人员占比≥10%。',
+     5:'基本达标，建议尽量提高占比，最好达到30%以上以提高总分。',
+     10:'达标。注意统计口径：科技人员包括直接从事研发和相关技术创新活动的人员。'
+   }},
+  {q:'近3年研发费用比例达标吗？',o:['不达标','基本达标','完全达标'],s:[0,10,20],k:'rnd',
+   guide:{
+     0:'研发费用归集不达标。补救：①建立研发费用辅助账，将研发支出单独核算；②委托外部研发费用可按80%计入；③常见被拒原因就是研发费用归集不规范，建议找会计师事务所协助。',
+     5:'基本达标，建议再检查：研发费用是否包含人员人工、直接投入、折旧费用等全部科目。',
+     10:'达标。注意保留研发费用归集的原始凭证，备查。'
+   }},
+  {q:'高新收入占总收入比例？',o:['低于60%','60%~80%','80%以上'],s:[0,15,20],k:'income',
+   guide:{
+     0:'高新收入占比低于60%，不达标。优化方向：①将核心技术相关的收入单独核算；②调整业务结构，增加高新产品/服务的收入占比；③检查收入分类是否合理。',
+     5:'接近达标。建议提高到80%以上以获得更高分数。注意高新收入需要有知识产权支撑。',
+     10:'达标。注意高新收入需有对应的知识产权或技术支撑。'
+   }},
+  {q:'创新能力评价预估多少分？',o:['低于70','70~80','80以上'],s:[0,10,20],k:'innovation',
+   guide:{
+     0:'低于70分，需要全面提升。重点补：知识产权数量、科技成果转化能力、研发组织管理水平。',
+     5:'70-80分，基本达标但偏低。建议找专业机构做一次预审评估，针对性补强。',
+     10:'80以上，条件较好。注意材料要完整规范，避免形式审查被退回。'
+   }}
+];
+
+const processData = {
+  title: '📋 高新认定全流程',
+  steps: [
+    {title:'第一步：自我评价（就是你现在做的）',desc:'对照认定条件逐项自查，确认基本符合后再启动正式申报。评分≥70分可申报。'},
+    {title:'第二步：准备申报材料（最耗时，约2-4周）',desc:'核心材料：①高新技术企业认定申请书；②知识产权证明材料；③研发费用专项审计报告；④高新收入专项审计报告；⑤科技人员情况说明；⑥近3年财务报表。'},
+    {title:'第三步：网上提交',desc:'登录"高新技术企业认定管理工作网"（www.innocom.gov.cn）注册并提交电子材料。提交后等待受理。'},
+    {title:'第四步：专家评审（约2-3个月）',desc:'认定机构组织专家对企业材料进行评审。可能要求补充材料或现场考察。评审通过后公示10个工作日。'},
+    {title:'第五步：备案拿证',desc:'公示无异议后，报全国高企认定管理领导小组办公室备案。备案完成后颁发高新技术企业证书，有效期3年。'},
+    {title:'💰 政策红利',desc:'①企业所得税按15%征收（原25%，省10%）；②研发费用加计扣除；③各省市还有额外奖励（10万-100万不等）。'}
+  ]
+};
+
+function init(){
+  const c=document.getElementById('questions');
+  c.innerHTML='';
+  d.forEach((x,i)=>{
+    const opts=x.o.map((t,j)=>`<option value="${x.s[j]}">${t}</option>`).join('');
+    c.innerHTML+=`<div class="q"><label>${i+1}. ${x.q}</label><select id="s${i}">${opts}</select></div>`;
+  });
+}
+
+function calc(){
+  let t=0;
+  d.forEach((_,i)=>t+=+document.getElementById('s'+i).value);
+  
+  document.getElementById('quizCard').classList.add('hide');
+  document.getElementById('resultCard').classList.remove('hide');
+  
+  const scoreCard=document.getElementById('scoreCard');
+  const guideCard=document.getElementById('guideCard');
+  const processCard=document.getElementById('processCard');
+  
+  let c,l,passText;
+  if(t>=85){c='green';l='A';passText='✅ 条件充分，建议申报'}
+  else if(t>=70){c='orange';l='B';passText='⚠️ 基本达标，补强后申报'}
+  else{c='red';l='C';passText='❌ 暂不满足条件'}
+  
+  let rows='';
+  const failures=[];
+  d.forEach((x,i)=>{
+    const v=+document.getElementById('s'+i).value;
+    const m=Math.max(...x.s);
+    const st=v===0?'❌':v<m?'⚠️':'✅';
+    const sc=v===0?'#e71d36':v<m?'#ff9f1c':'#2ec4b6';
+    rows+=`<div class="dim-row"><span class="dim-label"><span class="dim-icon">${st}</span>${x.q}</span><span class="dim-score" style="color:${sc}">${v}/${m}</span></div>`;
+    if(v<m||v===0)failures.push({idx:i,key:x.k,q:x.q,val:v,guide:x.guide[v]});
+  });
+  
+  let guideHTML='';
+  if(failures.length>0){
+    guideHTML='<div class="section-title">🔧 需要补强的项目</div>';
+    failures.forEach(f=>{
+      guideHTML+=`<div class="guide-card"><h4>⚠️ ${f.q}</h4><p>${f.guide}</p></div>`;
+    });
+  }else{
+    guideHTML=`<div class="guide-card green-bg"><h4>✅ 全部达标</h4><p>所有维度都满足条件！可以直接准备申报材料了。建议找专业机构做一次材料审核，确保万无一失。</p></div>`;
+  }
+  
+  // Process section
+  let processHTML='<div class="section-title">📋 高新认定申报流程</div>';
+  processData.steps.forEach((s,i)=>{
+    processHTML+=`<div class="process-step"><div class="step-num">${i+1}</div><div class="step-content"><div class="step-title">${s.title}</div><div class="step-desc">${s.desc}</div></div></div>`;
+  });
+  
+  scoreCard.innerHTML=`
+    <div class="score-wrap">
+      <div class="score-num ${c}">${t}</div>
+      <div class="score-label">综合评分 / 100</div>
+      <span class="badge ${c}">${l}级</span>
+      <div class="verdict" style="color:${c==='green'?'#2ec4b6':c==='orange'?'#ff9f1c':'#e71d36'}">${passText}</div>
+    </div>
+    <div class="section-title">📊 各维度详情</div>
+    ${rows}
+  `;
+  
+  document.getElementById('guideContent').innerHTML=guideHTML;
+  document.getElementById('processContent').innerHTML=processHTML;
+  
+  guideCard.classList.remove('hide');
+  processCard.classList.remove('hide');
+  
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+function reset(){
+  document.getElementById('resultCard').classList.add('hide');
+  document.getElementById('quizCard').classList.remove('hide');
+  document.getElementById('guideCard').classList.add('hide');
+  document.getElementById('processCard').classList.add('hide');
+  d.forEach((_,i)=>document.getElementById('s'+i).selectedIndex=0);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 init();
 </script>
 </body>
